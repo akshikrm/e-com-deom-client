@@ -1,15 +1,39 @@
 "use client";
 import InputItem from "@/components/input-item";
-import { useActionState } from "react";
+import { useActionState, useEffect, useMemo } from "react";
 import { registerDefaultState } from "./utils";
 import { handleSubmit } from "./action";
+import { useRouter } from "next/navigation";
+
+const getValueFromForm = (formData?: FormData) => {
+  return (key: string): string => {
+    if (formData) {
+      return formData.get(key) as string;
+    }
+    return "";
+  };
+};
 
 export default function Register() {
   const [state, registerUser] = useActionState(
     handleSubmit,
     registerDefaultState,
   );
-  console.log(state);
+
+  const getValue = useMemo(() => {
+    return getValueFromForm(state.payload);
+  }, [state.payload]);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state.data) {
+      const { data } = state.data;
+      localStorage.setItem("auth-token", data);
+      router.push("/dashboard");
+    }
+  }, [state.data, router]);
+
   return (
     <form action={registerUser} className="space-y-6">
       <InputItem
@@ -17,7 +41,8 @@ export default function Register() {
         id="email"
         name="email"
         type="email"
-        defaultValue={state.payload?.get("email") as string}
+        defaultValue={getValue("email")}
+        errors={state.errors?.email}
       />
       <InputItem
         label="Password"
@@ -32,7 +57,8 @@ export default function Register() {
         id="password"
         name="password"
         type="password"
-        defaultValue={state.payload?.get("password") as string}
+        defaultValue={getValue("password")}
+        errors={state.errors?.password}
       />
       <div>
         <button

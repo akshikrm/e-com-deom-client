@@ -8,6 +8,7 @@ type InputItemProps = {
   label: string;
   id: string | "";
   name: string;
+  errors?: string;
   defaultValue?: string | FormDataEntryValue;
   required?: boolean;
   labelAction?: React.ReactNode;
@@ -50,18 +51,22 @@ const InputItem: FunctionComponent<InputItemProps> = ({
   label,
   id,
   labelAction,
+  errors,
   ...props
-}) => (
-  <div>
-    <InputLabel id={id} labelAction={labelAction} label={label} />
-    <div className="mt-2">
-      <input
-        id={id}
-        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-        {...props}
-      />
+}) => {
+  return (
+    <div>
+      <InputLabel id={id} labelAction={labelAction} label={label} />
+      <div className="mt-2">
+        <input
+          id={id}
+          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+          {...props}
+        />
+      </div>
+      {errors ? <p className="text-sm text-rose-500">{errors}</p> : null}
     </div>
-  </div>
-);
+  );
+};
 
 export default InputItem;

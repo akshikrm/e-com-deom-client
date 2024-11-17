@@ -9,16 +9,17 @@ export const registerSchema = z.object({
   }),
 });
 
-export type FormState = {
-  message: string;
-  errors: object;
-  payload: FormData | null;
-  response: any | null;
+export type Errors = {
+  email?: string;
+  password?: string;
 };
 
-export const registerDefaultState: FormState = {
-  message: "",
-  errors: {},
-  payload: null,
-  response: null,
+export type FormState = {
+  message?: string;
+  payload?: FormData;
+  errors?: Errors;
+  status?: number;
+  data?: { data: string };
 };
+
+export const registerDefaultState: FormState = {};

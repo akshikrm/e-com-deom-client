@@ -1,5 +1,5 @@
 "use server";
-import { FormState, registerSchema } from "./utils";
+import { Errors, FormState, registerSchema } from "./utils";
 
 const BASE_URL = "http://localhost:5234";
 
@@ -12,34 +12,44 @@ export async function handleSubmit(
 
   if (!validated.success) {
     return {
-      ...previousState,
-      errors: validated.error.flatten(),
+      message: "invalid data",
+      errors: validated.error.flatten().fieldErrors as Errors,
       payload: formData,
     };
   }
+
   try {
     const res = await fetch(`${BASE_URL}/users`, {
       method: "POST",
       body: JSON.stringify(parsedData),
     });
-    const obj = {
-      message: "user registerd successfully",
-      errors: {},
-      payload: formData,
-      response: await res.json(),
-    };
+
+    const parsedResponseData = await res.json();
+    if (res.status === 201) {
+      return {
+        message: "user registerd successfully",
+        data: parsedResponseData,
+        payload: formData,
+      };
+    }
 
     if (res.status === 409) {
-      obj.message = `user with email ${formData.get("email")} already exists`;
+      return {
+        message: `user with email ${formData.get("email")} already exists`,
+        payload: formData,
+        errors: {
+          email: "email already taken",
+        },
+      };
     }
-    return obj;
+
+    return previousState;
   } catch (err) {
     console.log(err);
     return {
       message: "failed to register user",
       errors: {},
       payload: formData,
-      response: null,
     };
   }
 }
