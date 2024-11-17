@@ -4,9 +4,6 @@ export const loginSchema = z.object({
   email: z.string().email({
     message: "Invalid Email",
   }),
-  password: z.string().min(8, {
-    message: "Password too short",
-  }),
 });
 
 export type Errors = {
