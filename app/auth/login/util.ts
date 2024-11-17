@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  email: z.string().email({
-    message: "Invalid Email",
+  email: z.string({ message: "email is required" }).email({
+    message: "invalid email",
   }),
 });
 

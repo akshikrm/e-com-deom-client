@@ -1,14 +1,17 @@
 "use server";
 import { BASE_URL } from "@/config";
 import { Errors, FormState, loginSchema } from "./util";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function handleSubmit(
-  previousState: FormState,
+  _: FormState,
   formData: FormData,
 ): Promise<FormState> {
   const parsedData = getJsonData(formData);
   const validated = loginSchema.safeParse(parsedData);
 
+  const cookieStore = await cookies();
   if (!validated.success) {
     return {
       message: "invalid data",
@@ -23,24 +26,18 @@ export async function handleSubmit(
       body: JSON.stringify(parsedData),
     });
 
-    console.log(res);
     const parsedResponseData = await res.json();
     if (res.status === 200) {
-      return {
-        message: "login success",
-        data: parsedResponseData,
-        payload: formData,
-      };
+      cookieStore.set("auth-token", parsedResponseData.data);
     }
-
-    return previousState;
   } catch (err) {
     console.log(err);
     return {
       message: "failed to login",
-      errors: {},
       payload: formData,
     };
+  } finally {
+    redirect("/dashboard");
   }
 }
 

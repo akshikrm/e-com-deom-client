@@ -1,28 +1,17 @@
 "use client";
-
 import InputItem from "@/components/input-item";
 import { getValueFromForm } from "@/utils/form";
-import { useActionState, useEffect, useMemo } from "react";
-import { loginDefaultState } from "./util";
+import { useActionState, useMemo } from "react";
 import { handleSubmit } from "./action";
-import { useRouter } from "next/navigation";
+import { loginDefaultState } from "./util";
 
 const Login = () => {
   const [state, loginUser] = useActionState(handleSubmit, loginDefaultState);
 
-  const getValue = useMemo(() => {
-    return getValueFromForm(state.payload);
-  }, [state.payload]);
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (state.data) {
-      const { data } = state.data;
-      localStorage.setItem("auth-token", data);
-      router.push("/dashboard");
-    }
-  }, [state.data, router]);
+  const getValue = useMemo(
+    () => getValueFromForm(state.payload),
+    [state.payload],
+  );
 
   return (
     <form action={loginUser} className="space-y-6">
