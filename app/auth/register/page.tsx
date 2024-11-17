@@ -4,15 +4,7 @@ import { useActionState, useEffect, useMemo } from "react";
 import { registerDefaultState } from "./utils";
 import { handleSubmit } from "./action";
 import { useRouter } from "next/navigation";
-
-const getValueFromForm = (formData?: FormData) => {
-  return (key: string): string => {
-    if (formData) {
-      return formData.get(key) as string;
-    }
-    return "";
-  };
-};
+import { getValueFromForm } from "@/utils/form";
 
 export default function Register() {
   const [state, registerUser] = useActionState(
@@ -25,7 +17,6 @@ export default function Register() {
   }, [state.payload]);
 
   const router = useRouter();
-
   useEffect(() => {
     if (state.data) {
       const { data } = state.data;

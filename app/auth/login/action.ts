@@ -1,13 +1,13 @@
 "use server";
 import { BASE_URL } from "@/config";
-import { Errors, FormState, registerSchema } from "./utils";
+import { Errors, FormState, loginSchema } from "./util";
 
 export async function handleSubmit(
   previousState: FormState,
   formData: FormData,
 ): Promise<FormState> {
   const parsedData = getJsonData(formData);
-  const validated = registerSchema.safeParse(parsedData);
+  const validated = loginSchema.safeParse(parsedData);
 
   if (!validated.success) {
     return {
@@ -18,27 +18,18 @@ export async function handleSubmit(
   }
 
   try {
-    const res = await fetch(`${BASE_URL}/users`, {
+    const res = await fetch(`${BASE_URL}/login`, {
       method: "POST",
       body: JSON.stringify(parsedData),
     });
 
+    console.log(res);
     const parsedResponseData = await res.json();
-    if (res.status === 201) {
+    if (res.status === 200) {
       return {
-        message: "user registerd successfully",
+        message: "login success",
         data: parsedResponseData,
         payload: formData,
-      };
-    }
-
-    if (res.status === 409) {
-      return {
-        message: `user with email ${formData.get("email")} already exists`,
-        payload: formData,
-        errors: {
-          email: "email already taken",
-        },
       };
     }
 
@@ -46,7 +37,7 @@ export async function handleSubmit(
   } catch (err) {
     console.log(err);
     return {
-      message: "failed to register user",
+      message: "failed to login",
       errors: {},
       payload: formData,
     };
