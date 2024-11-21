@@ -1,11 +1,18 @@
-import { FunctionComponent, ReactNode } from "react";
+import { FunctionComponent, MouseEvent, ReactNode } from "react";
 
 type ButtonVariants = "primary" | "danger";
 
-const Button: FunctionComponent<{
+type Props = {
   children: ReactNode;
   variant?: ButtonVariants;
-}> = ({ children, variant = "primary" }) => {
+  onClick?: (e: MouseEvent) => void;
+};
+
+const Button: FunctionComponent<Props> = ({
+  children,
+  variant = "primary",
+  onClick,
+}) => {
   let className =
     "capitalize shadow-lg text-white py-1 px-4 rounded-md text-sm";
 
@@ -21,7 +28,11 @@ const Button: FunctionComponent<{
     }
   }
 
-  return <button className={className}>{children}</button>;
+  return (
+    <button onClick={onClick} className={className}>
+      {children}
+    </button>
+  );
 };
 
 export default Button;

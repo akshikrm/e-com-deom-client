@@ -9,7 +9,7 @@ type InputItemProps = {
   id: string | "";
   name: string;
   errors?: string;
-  defaultValue?: string | FormDataEntryValue;
+  defaultValue?: null | FormDataEntryValue;
   required?: boolean;
   labelAction?: React.ReactNode;
   type?: HTMLInputTypeAttribute;
@@ -54,17 +54,24 @@ const InputItem: FunctionComponent<InputItemProps> = ({
   errors,
   ...props
 }) => {
+  let inputClassName =
+    "block w-full rounded-md border-2 p-1.5 focus:border-indigo-500 focus:outline-none";
+
+  if (errors) {
+    inputClassName = `${inputClassName} border-rose-500`;
+  } else {
+    inputClassName = `${inputClassName} border-gray-400`;
+  }
+
   return (
     <div>
       <InputLabel id={id} labelAction={labelAction} label={label} />
       <div className="mt-2">
-        <input
-          id={id}
-          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-          {...props}
-        />
+        <input id={id} className={inputClassName} {...props} />
       </div>
-      {errors ? <p className="text-sm text-rose-500">{errors}</p> : null}
+      {errors ? (
+        <p className="capitalize text-sm text-rose-500">{errors}</p>
+      ) : null}
     </div>
   );
 };
