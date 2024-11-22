@@ -6,12 +6,14 @@ type Props = {
   children: ReactNode;
   variant?: ButtonVariants;
   onClick?: (e: MouseEvent) => void;
+  type: "submit" | "reset" | "button" | undefined;
 };
 
 const Button: FunctionComponent<Props> = ({
   children,
   variant = "primary",
   onClick,
+  type,
 }) => {
   let className =
     "capitalize shadow-lg text-white py-1 px-4 rounded-md text-sm";
@@ -29,7 +31,7 @@ const Button: FunctionComponent<Props> = ({
   }
 
   return (
-    <button onClick={onClick} className={className}>
+    <button onClick={onClick} className={className} type={type}>
       {children}
     </button>
   );
