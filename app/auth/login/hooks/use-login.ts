@@ -23,8 +23,7 @@ const useLogin = () => {
 
   const { setError } = methods;
   const onSubmit = async (inputData: LoginRequest) => {
-    const { message, error } = await handleLogin(inputData);
-    console.log(message);
+    const { error } = await handleLogin(inputData);
     if (error) {
       Object.entries(error).forEach(([k, v]) => {
         setError(k, { message: v });

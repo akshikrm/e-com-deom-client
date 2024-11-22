@@ -19,7 +19,6 @@ export async function handleLogin(
 const handleAxiosErrors = (err: unknown) => {
   {
     const { status, failed } = err as RequestFailedError;
-
     switch (status) {
       case 404: {
         return failed({

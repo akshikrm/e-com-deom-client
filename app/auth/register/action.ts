@@ -1,62 +1,32 @@
 "use server";
-import { BASE_URL } from "@/config";
-import { Errors, FormState, registerSchema } from "./utils";
+import { cookies } from "next/headers";
+import server from "@/utils/server";
 
-export async function handleSubmit(
-  previousState: FormState,
-  formData: FormData,
-): Promise<FormState> {
-  const parsedData = getJsonData(formData);
-  const validated = registerSchema.safeParse(parsedData);
-
-  if (!validated.success) {
-    return {
-      message: "invalid data",
-      errors: validated.error.flatten().fieldErrors as Errors,
-      payload: formData,
-    };
-  }
-
+export async function handleRegister(
+  inputData: RegisterReqest,
+): Promise<FailedResponse> {
+  const cookieStore = await cookies();
   try {
-    const res = await fetch(`${BASE_URL}/users`, {
-      method: "POST",
-      body: JSON.stringify(parsedData),
-    });
-
-    const parsedResponseData = await res.json();
-    if (res.status === 201) {
-      return {
-        message: "user registerd successfully",
-        data: parsedResponseData,
-        payload: formData,
-      };
-    }
-
-    if (res.status === 409) {
-      return {
-        message: `user with email ${formData.get("email")} already exists`,
-        payload: formData,
-        errors: {
-          email: "email already taken",
-        },
-      };
-    }
-
-    return previousState;
+    const { data } = await server.post("/users", inputData);
+    cookieStore.set("auth-token", data.data);
+    return { status: true, message: "register success" };
   } catch (err) {
-    console.log(err);
-    return {
-      message: "failed to register user",
-      errors: {},
-      payload: formData,
-    };
+    return handleAxiosErrors(err);
   }
 }
 
-const getJsonData = (formData: FormData) => {
-  const obj = {
-    email: formData.get("email"),
-    password: formData.get("password"),
-  };
-  return obj;
+const handleAxiosErrors = (err: unknown) => {
+  {
+    const { status, failed } = err as RequestFailedError;
+    switch (status) {
+      case 409: {
+        return failed({
+          email: "email already taken",
+        });
+      }
+      default: {
+        return failed();
+      }
+    }
+  }
 };
