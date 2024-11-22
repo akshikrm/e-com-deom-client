@@ -8,7 +8,7 @@ export default function AddProduct() {
   return (
     <Card>
       Add Product
-      <ProductForm methods={methods} onSubmit={onSubmit} />
+      <ProductForm methods={methods} onSubmit={onSubmit} buttonLabel="create" />
     </Card>
   );
 }

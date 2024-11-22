@@ -9,16 +9,21 @@ import { FunctionComponent } from "react";
 type Props = {
   methods: UseFormReturn<NewProduct, any, undefined>;
   onSubmit: (inputData: NewProduct) => Promise<void>;
+  buttonLabel: string;
 };
 
-const ProductForm: FunctionComponent<Props> = ({ methods, onSubmit }) => {
+const ProductForm: FunctionComponent<Props> = ({
+  methods,
+  onSubmit,
+  buttonLabel,
+}) => {
   return (
     <RHFProvider methods={methods} onSubmit={onSubmit}>
       <RHFTextField name="name" label="Product Name" />
       <RHFTextField name="slug" label="Product URL" />
       <RHFTextField name="description" label="Description" />
       <RHFTextField name="price" label="Price" />
-      <Button type="submit">Add</Button>
+      <Button type="submit">{buttonLabel}</Button>
     </RHFProvider>
   );
 };

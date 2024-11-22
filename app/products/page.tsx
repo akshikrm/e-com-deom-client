@@ -4,6 +4,7 @@ import AddButton from "./components/add-button";
 import { getProducts } from "./handler";
 import { getJWT, checkRole } from "@/utils/auth";
 import { redirect } from "next/navigation";
+import EditProductButton from "./components/edit-button";
 
 export default async function Products() {
   const products = await getProducts();
@@ -29,7 +30,7 @@ export default async function Products() {
               <p className="text-sm text-slate-500">{item.description}</p>
               {isAdmin ? (
                 <>
-                  <Button>edit</Button>
+                  <EditProductButton productId={item.id} />
                   <Button variant="danger">delete</Button>
                 </>
               ) : null}
