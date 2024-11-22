@@ -3,13 +3,10 @@ import useProductForm from "../../hooks/use-product-form";
 import { useCallback, useEffect } from "react";
 import { getProductById, updateProduct } from "../actions";
 
-const ID = 1;
-
-const useEditProduct = () => {
+const useEditProduct = (productID: number) => {
   const methods = useProductForm();
-  const id = ID;
+  const id = productID;
   const { reset } = methods;
-
   const fetchProduct = useCallback(async () => {
     try {
       const { data, status } = await getProductById(id);
