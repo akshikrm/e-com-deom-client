@@ -5,6 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 
 const registerSchema = z.object({
+  last_name: z
+    .string({ required_error: "last name is required" })
+    .min(1, { message: "last name is requried" }),
+  first_name: z
+    .string({ required_error: "first name is required" })
+    .min(1, { message: "first name is requried" }),
   email: z
     .string({
       required_error: "email is required",
@@ -18,7 +24,12 @@ const registerSchema = z.object({
     .min(1, { message: "password is requried" }),
 });
 
-export const defaultRegisterData: RegisterReqest = { email: "", password: "" };
+export const defaultRegisterData: RegisterReqest = {
+  email: "",
+  password: "",
+  first_name: "",
+  last_name: "",
+};
 
 const useRegister = () => {
   const methods = useForm<RegisterReqest>({
