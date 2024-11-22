@@ -21,12 +21,12 @@ const productSchema = z.object({
       invalid_type_error: "description is required",
     })
     .min(1, { message: "description is required" }),
-  price: z
-    .string({
+  price: z.coerce
+    .number({
       required_error: "price is requred",
       invalid_type_error: "price should be a number",
     })
-    .min(1, { message: "price should be greater than zero" }),
+    .gte(1, { message: "price should be greater than zero" }),
 });
 
 const newProductDefaultValues: NewProduct = {
