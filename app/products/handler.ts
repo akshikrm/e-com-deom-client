@@ -1,6 +1,5 @@
 "use server";
-import { BASE_URL } from "@/config";
-import { getJWT } from "@/utils/auth";
+import server from "@/utils/server";
 
 type Product = {
   id: number;
@@ -11,15 +10,9 @@ type Product = {
 };
 
 export const getProducts = async (): Promise<Product[]> => {
-  const jwt = await getJWT();
   try {
-    const response = await fetch(`${BASE_URL}/products`, {
-      headers: {
-        Authorization: jwt,
-      },
-    });
-    const parsedResponse = await response.json();
-    return parsedResponse.data;
+    const { data } = await server.get("/products");
+    return data.data;
   } catch (err) {
     console.log(err);
     return [];

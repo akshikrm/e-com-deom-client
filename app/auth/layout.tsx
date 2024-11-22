@@ -1,10 +1,18 @@
 import "./auth.css";
+import { getJWT } from "@/utils/auth";
+import { redirect } from "next/navigation";
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jwt = await getJWT();
+
+  if (jwt) {
+    redirect("/dashboard");
+  }
+
   return (
     <section className="auth-section">
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">

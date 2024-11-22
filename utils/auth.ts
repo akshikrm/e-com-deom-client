@@ -1,7 +1,6 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 type USER_ROLE = "admin" | "user";
 
@@ -19,6 +18,14 @@ export const getJWT = async (): Promise<string> => {
     return jwt;
   }
   return "";
+};
+
+export const checkRole = async (role: USER_ROLE): Promise<boolean> => {
+  const decoded = await getDecodedJwt(await getJWT());
+  if (decoded) {
+    return decoded.role === role;
+  }
+  return false;
 };
 
 export const getDecodedJwt = async (jwt: string): Promise<JWT | null> => {
