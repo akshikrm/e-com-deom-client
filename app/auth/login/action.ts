@@ -1,50 +1,40 @@
 "use server";
-import { BASE_URL } from "@/config";
-import { Errors, FormState, loginSchema } from "./util";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import server from "@/utils/server";
 
-export async function handleSubmit(
-  _: FormState,
-  formData: FormData,
-): Promise<FormState> {
-  const parsedData = getJsonData(formData);
-  const validated = loginSchema.safeParse(parsedData);
-
+export async function handleLogin(
+  inputData: LoginRequest,
+): Promise<FailedResponse> {
   const cookieStore = await cookies();
-  if (!validated.success) {
-    return {
-      message: "invalid data",
-      errors: validated.error.flatten().fieldErrors as Errors,
-      payload: formData,
-    };
-  }
 
   try {
-    const res = await fetch(`${BASE_URL}/login`, {
-      method: "POST",
-      body: JSON.stringify(parsedData),
-    });
-
-    const parsedResponseData = await res.json();
-    if (res.status === 200) {
-      cookieStore.set("auth-token", parsedResponseData.data);
-    }
+    const { data } = await server.post("/login", inputData);
+    cookieStore.set("auth-token", data.data);
+    return { status: true, message: "login success" };
   } catch (err) {
-    console.log(err);
-    return {
-      message: "failed to login",
-      payload: formData,
-    };
-  } finally {
-    redirect("/dashboard");
+    return handleAxiosErrors(err);
   }
 }
 
-const getJsonData = (formData: FormData) => {
-  const obj = {
-    email: formData.get("email"),
-    password: formData.get("password"),
-  };
-  return obj;
+const handleAxiosErrors = (err: unknown) => {
+  {
+    const { status, failed } = err as RequestFailedError;
+
+    switch (status) {
+      case 404: {
+        return failed({
+          email: "email not found",
+        });
+      }
+      case 401: {
+        return failed({
+          email: "wrong email or password",
+          password: "wrong email or password",
+        });
+      }
+      default: {
+        return failed();
+      }
+    }
+  }
 };

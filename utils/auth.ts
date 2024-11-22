@@ -18,7 +18,7 @@ export const getJWT = async (): Promise<string> => {
   if (jwt) {
     return jwt;
   }
-  redirect("/auth/login");
+  return "";
 };
 
 export const getDecodedJwt = async (jwt: string): Promise<JWT | null> => {

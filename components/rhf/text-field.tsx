@@ -21,7 +21,6 @@ const RHFTextField: FunctionComponent<Props> = ({
       render={({ field, fieldState }) => {
         const { onChange, name, value } = field;
         const { error, invalid } = fieldState;
-        console.log(name, invalid);
         return (
           <CustomInput
             label={label}

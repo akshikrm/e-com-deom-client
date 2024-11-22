@@ -4,42 +4,26 @@ import { getValueFromForm } from "@/utils/form";
 import { useActionState, useMemo } from "react";
 import { handleSubmit } from "./action";
 import { loginDefaultState } from "./util";
+import RHFProvider from "@/components/rhf/provider";
+import useLogin from "./hooks/use-login";
+import RHFTextField from "@/components/rhf/text-field";
+import Button from "@/components/button";
 
 const Login = () => {
-  const [state, loginUser] = useActionState(handleSubmit, loginDefaultState);
+  // const [state, loginUser] = useActionState(handleSubmit, loginDefaultState);
 
-  const getValue = useMemo(
-    () => getValueFromForm(state.payload),
-    [state.payload],
-  );
+  // const getValue = useMemo(
+  // 	() => getValueFromForm(state.payload),
+  // 	[state.payload],
+  // );
 
+  const { methods, onSubmit } = useLogin();
   return (
-    <form action={loginUser} className="space-y-6">
-      <InputItem
-        label="Email Address"
-        id="email"
-        name="email"
-        type="email"
-        defaultValue={getValue("email")}
-        errors={state.errors?.email}
-      />
-      <InputItem
-        label="Password"
-        id="password"
-        name="password"
-        type="password"
-        defaultValue={getValue("password")}
-        errors={state.errors?.password}
-      />
-      <div>
-        <button
-          type="submit"
-          className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          login
-        </button>
-      </div>
-    </form>
+    <RHFProvider onSubmit={onSubmit} methods={methods}>
+      <RHFTextField label="Email" name="email" />
+      <RHFTextField label="Password" name="password" />
+      <Button type="submit">login</Button>
+    </RHFProvider>
   );
 };
 
