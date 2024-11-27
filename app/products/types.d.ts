@@ -11,3 +11,9 @@ type EditProduct = {
   description?: string;
   price?: string;
 };
+
+type Filter = {
+  start_date: string;
+  end_date: string;
+  category_id: string;
+};
