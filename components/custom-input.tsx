@@ -1,5 +1,10 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
-import { FunctionComponent, HTMLInputTypeAttribute, useMemo } from "react";
+import {
+  FunctionComponent,
+  HTMLInputTypeAttribute,
+  ReactNode,
+  useMemo,
+} from "react";
 
 type InputProps = {
   label: string;
@@ -43,6 +48,55 @@ const CustomInput: FunctionComponent<InputProps> = ({
         type={type}
         onChange={onChange}
       />
+
+      <HelperText message={helperText} error={error} />
+    </>
+  );
+};
+
+export const CustomSelect: FunctionComponent<{
+  children: ReactNode;
+  label: string;
+  value?: string;
+  name: string;
+  helperText?: string;
+  error?: boolean;
+  onChange?: (...event: any[]) => void;
+}> = ({
+  label,
+  value,
+  name,
+  helperText,
+  error = false,
+  children,
+  onChange,
+}) => {
+  const inputClassName = useMemo(() => {
+    const temp =
+      "block w-full rounded-md border-2 p-1.5 focus:border-indigo-500 focus:outline-none";
+    if (error) {
+      return `${temp} border-rose-500`;
+    }
+    return temp;
+  }, [error]);
+
+  return (
+    <>
+      <label
+        htmlFor={name}
+        className="block text-sm/6 font-medium text-gray-900"
+      >
+        {label}
+      </label>
+      <select
+        value={value}
+        name={name}
+        id={name}
+        className={inputClassName}
+        onChange={onChange}
+      >
+        {children}
+      </select>
 
       <HelperText message={helperText} error={error} />
     </>

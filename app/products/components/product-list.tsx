@@ -1,6 +1,6 @@
 "use client";
 import Card from "@/components/card";
-import { getProducts, Product } from "../handler";
+import { getProducts } from "../handler";
 import EditProductButton from "./edit-button";
 import DeleteButton from "./delete-button";
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
