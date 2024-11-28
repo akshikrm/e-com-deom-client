@@ -1,4 +1,4 @@
-import { getProductCategoryName } from "../handler";
+import { getProductCategoryName } from "@/app/products/handler";
 import { useCallback, useEffect, useState } from "react";
 
 const useFetchProductCategoryNames = (): ProductCategoryNames[] => {
