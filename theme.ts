@@ -6,6 +6,11 @@ const theme = createTheme({
     fontFamily: "var(--font-geist-mono)",
   },
   components: {
+    MuiStack: {
+      defaultProps: {
+        spacing: 2,
+      },
+    },
     MuiCard: {
       defaultProps: { variant: "outlined" },
       styleOverrides: {

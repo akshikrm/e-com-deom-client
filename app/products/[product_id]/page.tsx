@@ -14,7 +14,22 @@ export default function EditProduct({ params }: Props) {
   const { methods, onSubmit } = useEditProduct(parseInt(product_id));
   return (
     <>
-      <HeaderBreadcrumbs heading="Edit Product" />
+      <HeaderBreadcrumbs
+        heading="Edit Product"
+        links={[
+          {
+            label: "home",
+            href: "/",
+          },
+          {
+            label: "products",
+            href: "/products",
+          },
+          {
+            label: "edit",
+          },
+        ]}
+      />
       <Card>
         <ProductForm
           methods={methods}

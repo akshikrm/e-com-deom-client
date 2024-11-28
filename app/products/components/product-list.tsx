@@ -1,31 +1,15 @@
 "use client";
-import { getProducts } from "../handler";
-import { FunctionComponent, useCallback, useEffect, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import ProductFilter from "./product-filter";
-import { Button, Card } from "@mui/material";
+import { Box, Button, Card, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import DeleteProduct from "./delete-product";
+import RenderList from "@/components/render-list";
+import Render from "@/components/render";
+import useFetchProductList from "../hooks/use-product-list";
 
 type Props = {
   isAdmin: boolean;
-};
-
-const useFetchProductList = (): [
-  Product[],
-  (filter?: Filter) => Promise<void>,
-] => {
-  const [products, setProducts] = useState<Product[]>([]);
-
-  const fetchProducts = useCallback(async (filter?: Filter) => {
-    const data = await getProducts(filter);
-    setProducts(data);
-  }, []);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-
-  return [products, fetchProducts];
 };
 
 const ProductList: FunctionComponent<Props> = ({ isAdmin }) => {
@@ -50,33 +34,47 @@ const ProductList: FunctionComponent<Props> = ({ isAdmin }) => {
         selectedId={openDeleteDialog}
         onClose={handleCloseDelete}
       />
-      <div className="grid grid-rows-4 grid-flow-col gap-4">
-        {products?.map((item) => {
-          return (
-            <Card key={item.id}>
-              <p className="text-xl capitalize">{item.name}</p>
-              <p className="text-sm text-slate-500">{item.description}</p>
-              {isAdmin ? (
-                <>
-                  <Button
-                    color="warning"
-                    LinkComponent={Link}
-                    href={`/products/${item.id}`}
-                  >
-                    edit
-                  </Button>
-                  <Button
-                    color="error"
-                    onClick={() => handleOpenDelete(item.id)}
-                  >
-                    delete
-                  </Button>
-                </>
-              ) : null}
-            </Card>
-          );
-        })}
-      </div>
+      <Stack>
+        <RenderList
+          list={products}
+          render={(item: Product) => {
+            return (
+              <Card key={item.id}>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Box>
+                    <Typography variant="h6">{item.name}</Typography>
+                    <Typography variant="body1">{item.description}</Typography>
+                  </Box>
+                  <Render
+                    when={isAdmin}
+                    show={
+                      <Stack spacing={2} direction="row">
+                        <Button
+                          color="warning"
+                          LinkComponent={Link}
+                          href={`/products/${item.id}`}
+                        >
+                          edit
+                        </Button>
+                        <Button
+                          color="error"
+                          onClick={() => handleOpenDelete(item.id)}
+                        >
+                          delete
+                        </Button>
+                      </Stack>
+                    }
+                  />
+                </Stack>
+              </Card>
+            );
+          }}
+        />
+      </Stack>
     </>
   );
 };

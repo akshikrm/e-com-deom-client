@@ -1,14 +1,19 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Typography, Link as MLink } from "@mui/material";
+import Link from "next/link";
 import { FunctionComponent, ReactNode } from "react";
 
+type Links = {
+  label: string;
+  href?: string;
+};
 type Props = {
-  // links: string[];
+  links: Links[];
   heading: string;
   action?: ReactNode;
 };
 
 const HeaderBreadcrumbs: FunctionComponent<Props> = ({
-  // links,
+  links,
   action,
   heading,
 }) => {
@@ -19,6 +24,30 @@ const HeaderBreadcrumbs: FunctionComponent<Props> = ({
           <Typography variant="h4" variantMapping={{ h4: "h1" }} gutterBottom>
             {heading}
           </Typography>
+          <Breadcrumbs aria-label="breadcrumb">
+            {links.map(({ href = "", label }, i) => {
+              const isLast = i === links.length - 1;
+
+              if (isLast) {
+                return (
+                  <Typography sx={{ color: "text.muted" }} key={label}>
+                    {label}
+                  </Typography>
+                );
+              }
+              return (
+                <MLink
+                  key={href}
+                  component={Link}
+                  underline="hover"
+                  color="inherit"
+                  href={href}
+                >
+                  <Typography sx={{ color: "text.muted" }}>{label}</Typography>
+                </MLink>
+              );
+            })}
+          </Breadcrumbs>
           {/* <Breadcrumbs links={links} {...other} /> */}
         </Box>
 

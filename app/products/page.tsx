@@ -19,6 +19,15 @@ export default async function Products() {
     <>
       <HeaderBreadcrumbs
         heading="Product List"
+        links={[
+          {
+            label: "home",
+            href: "/",
+          },
+          {
+            label: "products",
+          },
+        ]}
         action={
           <Button LinkComponent={Link} color="primary" href="/products/add">
             add
