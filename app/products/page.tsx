@@ -3,8 +3,13 @@ import { redirect } from "next/navigation";
 import ProductList from "./components/product-list";
 import { Button } from "@mui/material";
 import Link from "next/link";
-
 import HeaderBreadcrumbs from "@/components/header";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Products",
+  description: "List of products",
+};
 
 export default async function Products() {
   const jwt = await getJWT();
