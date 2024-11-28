@@ -11,6 +11,7 @@ type EditProduct = {
   slug?: string;
   description?: string;
   price?: string;
+  category_id?: string;
 };
 
 type Filter = {

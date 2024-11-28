@@ -15,6 +15,7 @@ const useEditProduct = (productID: number) => {
           description: data?.description,
           slug: data?.slug,
           price: data?.price,
+          category_id: data?.category_id,
         });
       }
     } catch (err) {
