@@ -4,6 +4,8 @@ import ProductList from "./components/product-list";
 import { Button } from "@mui/material";
 import Link from "next/link";
 
+import HeaderBreadcrumbs from "@/components/header";
+
 export default async function Products() {
   const jwt = await getJWT();
 
@@ -15,14 +17,14 @@ export default async function Products() {
 
   return (
     <>
-      <div className="flex justify-between">
-        <h1 className="capitalize">products list</h1>
-        {isAdmin ? (
+      <HeaderBreadcrumbs
+        heading="Product List"
+        action={
           <Button LinkComponent={Link} color="primary" href="/products/add">
             add
           </Button>
-        ) : null}
-      </div>
+        }
+      />
       <ProductList isAdmin={isAdmin} />
     </>
   );
