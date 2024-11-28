@@ -8,7 +8,22 @@ export default function AddProduct() {
   const { methods, onSubmit } = useAddProduct();
   return (
     <>
-      <HeaderBreadcrumbs heading="Add Product" />
+      <HeaderBreadcrumbs
+        heading="Add Product"
+        links={[
+          {
+            label: "home",
+            href: "/",
+          },
+          {
+            label: "products",
+            href: "/products",
+          },
+          {
+            label: "add",
+          },
+        ]}
+      />
       <Card>
         <ProductForm
           methods={methods}
