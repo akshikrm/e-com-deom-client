@@ -1,5 +1,5 @@
 import LoadingButton from "@mui/lab/LoadingButton";
-import { FunctionComponent } from "react";
+import { FunctionComponent, ReactNode } from "react";
 import RHFProvider from "@/components/rhf/provider";
 import { useForm } from "react-hook-form";
 import RHFTextField from "@/components/rhf/text-field";
@@ -19,6 +19,29 @@ const schema = z.object({
   end_date: z.string(),
 });
 
+type Props = {
+  customOption?: ReactNode | null;
+};
+
+export const ProductCategoryNames: FunctionComponent<Props> = ({
+  customOption,
+}) => {
+  const productCategoryNames = useFetchProductCategoryNames();
+
+  return (
+    <RHFSelect label="Category" name="category_id">
+      {customOption ? customOption : <option value="" />}
+      {productCategoryNames.map(({ id, name }) => {
+        return (
+          <option value={id} key={id}>
+            {name}
+          </option>
+        );
+      })}
+    </RHFSelect>
+  );
+};
+
 const ProductFilter: FunctionComponent<FilterProps> = ({ onFilter }) => {
   const methods = useForm<Filter>({
     defaultValues: {
@@ -29,23 +52,12 @@ const ProductFilter: FunctionComponent<FilterProps> = ({ onFilter }) => {
     resolver: zodResolver(schema),
   });
 
-  const productCategoryNames = useFetchProductCategoryNames();
-
   return (
     <Card sx={{ mb: 5 }}>
       <RHFProvider methods={methods} onSubmit={onFilter}>
         <RHFTextField label="start date" name="start_date" type="date" />
         <RHFTextField label="end date" name="end_date" type="date" />
-        <RHFSelect label="Category" name="category_id">
-          <option value="all">All</option>
-          {productCategoryNames.map(({ id, name }) => {
-            return (
-              <option value={id} key={id}>
-                {name}
-              </option>
-            );
-          })}
-        </RHFSelect>
+        <ProductCategoryNames customOption={<option value="all">All</option>} />
         <LoadingButton
           loading={methods.formState.isSubmitting}
           type="submit"

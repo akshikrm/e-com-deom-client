@@ -21,6 +21,12 @@ const productSchema = z.object({
       invalid_type_error: "description is required",
     })
     .min(1, { message: "description is required" }),
+  category_id: z.coerce
+    .number({
+      required_error: "category is required",
+      invalid_type_error: "category is required",
+    })
+    .gte(1, { message: "category is required" }),
   price: z.coerce
     .number({
       required_error: "price is requred",
@@ -33,6 +39,7 @@ const newProductDefaultValues: NewProduct = {
   name: "",
   slug: "",
   description: "",
+  category_id: "",
   price: "",
 };
 

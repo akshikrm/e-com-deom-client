@@ -1,8 +1,8 @@
 "use client";
-import Card from "@/components/card";
 import useEditProduct from "./hooks/use-edit-product";
 import ProductForm from "../components/product-form";
 import { use } from "react";
+import { Card } from "@mui/material";
 
 type Props = {
   params: Promise<{ product_id: string }>;

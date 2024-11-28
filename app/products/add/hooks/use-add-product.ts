@@ -1,18 +1,18 @@
 "use client";
-
 import { useRouter } from "next/navigation";
-import server from "@/utils/server";
 import useProductForm from "../../hooks/use-product-form";
+import { createProduct } from "../../handler";
 
 const useAddProduct = () => {
   const methods = useProductForm();
 
   const router = useRouter();
   const onSubmit = async (inputData: NewProduct) => {
-    const reqData = { ...inputData, price: parseInt(inputData.price) };
     try {
-      await server.post("/products", reqData);
-      router.push("/products");
+      const { status } = await createProduct(inputData);
+      if (status) {
+        router.push("/products");
+      }
     } catch (err) {
       console.log(err);
     }

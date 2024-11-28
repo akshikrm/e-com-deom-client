@@ -1,7 +1,7 @@
 "use client";
-import Card from "@/components/card";
 import useAddProduct from "./hooks/use-add-product";
 import ProductForm from "../components/product-form";
+import { Card } from "@mui/material";
 
 export default function AddProduct() {
   const { methods, onSubmit } = useAddProduct();

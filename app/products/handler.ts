@@ -12,6 +12,18 @@ export const getProducts = async (params: object = {}): Promise<Product[]> => {
   }
 };
 
+export const createProduct = async (
+  reqData: NewProduct,
+): Promise<FailedResponse> => {
+  try {
+    const { data } = await server.post("/products", reqData);
+    return { status: true, message: data.data };
+  } catch (err) {
+    const { failed } = err as RequestFailedError;
+    return failed();
+  }
+};
+
 export const getProductCategoryName = async (
   params: object = {},
 ): Promise<ProductCategoryNames[]> => {
