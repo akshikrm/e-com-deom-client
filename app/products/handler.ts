@@ -1,5 +1,6 @@
 "use server";
 import server from "@/utils/server";
+import { AxiosError } from "axios";
 
 export const getProducts = async (params: object = {}): Promise<Product[]> => {
   try {
@@ -20,5 +21,24 @@ export const getProductCategoryName = async (
   } catch (err) {
     console.log(err);
     return [];
+  }
+};
+
+export const productDelete = async (
+  id: number,
+  params: object = {},
+): Promise<{ status: boolean; message: string }> => {
+  try {
+    const { data } = await server.delete(`/products/${id}`, { params });
+    return {
+      status: true,
+      message: data.data,
+    };
+  } catch (err) {
+    const test = err as AxiosError;
+    return {
+      status: true,
+      message: test.response?.data as string,
+    };
   }
 };

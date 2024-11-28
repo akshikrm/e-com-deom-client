@@ -13,9 +13,9 @@ type EditProduct = {
 };
 
 type Filter = {
-  start_date: string;
-  end_date: string;
-  category_id: string;
+  start_date: string | null;
+  end_date: string | null;
+  category_id: string | null;
 };
 
 type ProductCategoryNames = {

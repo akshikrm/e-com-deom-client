@@ -2,9 +2,9 @@
 
 import RHFProvider from "@/components/rhf/provider";
 import RHFTextField from "@/components/rhf/text-field";
-import Button from "@/components/button";
 import { UseFormReturn } from "react-hook-form";
 import { FunctionComponent } from "react";
+import { Button } from "@mui/material";
 
 type Props = {
   methods: UseFormReturn<NewProduct, any, undefined>;

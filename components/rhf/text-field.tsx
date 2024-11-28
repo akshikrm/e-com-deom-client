@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { FunctionComponent, HTMLInputTypeAttribute } from "react";
-import CustomInput from "../custom-input";
+import { TextField } from "@mui/material";
 
 type Props = {
   label: string;
@@ -22,7 +22,7 @@ const RHFTextField: FunctionComponent<Props> = ({
         const { onChange, name, value } = field;
         const { error, invalid } = fieldState;
         return (
-          <CustomInput
+          <TextField
             label={label}
             name={name}
             onChange={onChange}

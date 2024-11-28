@@ -1,7 +1,8 @@
-import AddButton from "./components/add-button";
 import { getJWT, checkRole } from "@/utils/auth";
 import { redirect } from "next/navigation";
 import ProductList from "./components/product-list";
+import { Button } from "@mui/material";
+import Link from "next/link";
 
 export default async function Products() {
   const jwt = await getJWT();
@@ -16,7 +17,11 @@ export default async function Products() {
     <>
       <div className="flex justify-between">
         <h1 className="capitalize">products list</h1>
-        {isAdmin ? <AddButton /> : null}
+        {isAdmin ? (
+          <Button LinkComponent={Link} color="primary" href="/products/add">
+            add
+          </Button>
+        ) : null}
       </div>
       <ProductList isAdmin={isAdmin} />
     </>

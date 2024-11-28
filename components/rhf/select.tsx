@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { FunctionComponent, ReactNode } from "react";
-import { CustomSelect } from "../custom-input";
+import { TextField } from "@mui/material";
 
 type Props = {
   label: string;
@@ -18,8 +18,14 @@ const RHFSelect: FunctionComponent<Props> = ({ label, name, children }) => {
         const { onChange, name, value } = field;
         const { error, invalid } = fieldState;
         return (
-          <CustomSelect
+          <TextField
             label={label}
+            select
+            slotProps={{
+              select: {
+                native: true,
+              },
+            }}
             name={name}
             onChange={onChange}
             value={value}
@@ -27,7 +33,7 @@ const RHFSelect: FunctionComponent<Props> = ({ label, name, children }) => {
             helperText={error?.message}
           >
             {children}
-          </CustomSelect>
+          </TextField>
         );
       }}
     />

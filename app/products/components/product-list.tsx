@@ -1,10 +1,10 @@
 "use client";
-import Card from "@/components/card";
 import { getProducts } from "../handler";
-import EditProductButton from "./edit-button";
-import DeleteButton from "./delete-button";
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import ProductFilter from "./product-filter";
+import { Button, Card } from "@mui/material";
+import Link from "next/link";
+import DeleteProduct from "./delete-product";
 
 type Props = {
   isAdmin: boolean;
@@ -30,6 +30,14 @@ const useFetchProductList = (): [
 
 const ProductList: FunctionComponent<Props> = ({ isAdmin }) => {
   const [products, fetchProducts] = useFetchProductList();
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<number | null>(null);
+
+  const handleCloseDelete = async () => {
+    setOpenDeleteDialog(null);
+  };
+  const handleOpenDelete = (id: number) => {
+    setOpenDeleteDialog(id);
+  };
 
   return (
     <>
@@ -37,6 +45,10 @@ const ProductList: FunctionComponent<Props> = ({ isAdmin }) => {
         onFilter={async (inputData: Filter) => {
           await fetchProducts(inputData);
         }}
+      />
+      <DeleteProduct
+        selectedId={openDeleteDialog}
+        onClose={handleCloseDelete}
       />
       <div className="grid grid-rows-4 grid-flow-col gap-4">
         {products?.map((item) => {
@@ -46,8 +58,19 @@ const ProductList: FunctionComponent<Props> = ({ isAdmin }) => {
               <p className="text-sm text-slate-500">{item.description}</p>
               {isAdmin ? (
                 <>
-                  <EditProductButton productId={item.id} />
-                  <DeleteButton />
+                  <Button
+                    color="warning"
+                    LinkComponent={Link}
+                    href={`/products/${item.id}`}
+                  >
+                    edit
+                  </Button>
+                  <Button
+                    color="error"
+                    onClick={() => handleOpenDelete(item.id)}
+                  >
+                    delete
+                  </Button>
                 </>
               ) : null}
             </Card>
