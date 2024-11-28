@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import "./globals.css";
-import { ThemeProvider } from "@mui/material";
+import { Container, ThemeProvider } from "@mui/material";
 import theme from "@/theme";
 import DatePickerProvider from "@/components/date-picker-provider";
 
@@ -27,7 +27,9 @@ export default async function RootLayout({
       <body className={geistMono.variable}>
         <AppRouterCacheProvider>
           <DatePickerProvider>
-            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+            <ThemeProvider theme={theme}>
+              <Container maxWidth="lg">{children}</Container>
+            </ThemeProvider>
           </DatePickerProvider>
         </AppRouterCacheProvider>
       </body>

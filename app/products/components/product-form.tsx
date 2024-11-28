@@ -3,7 +3,7 @@ import RHFTextField from "@/components/rhf/text-field";
 import { UseFormReturn } from "react-hook-form";
 import { FunctionComponent } from "react";
 import { Button, Stack } from "@mui/material";
-import { ProductCategoryNames } from "./product-filter";
+import ProductCategoryNames from "@/components/product-category-names";
 
 type Props = {
   methods: UseFormReturn<NewProduct, any, undefined>;
