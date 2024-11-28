@@ -2,12 +2,13 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { FunctionComponent, ReactNode } from "react";
 import RHFProvider from "@/components/rhf/provider";
 import { useForm } from "react-hook-form";
-import RHFTextField from "@/components/rhf/text-field";
 import useFetchProductCategoryNames from "../hooks/use-product-category-names";
 import RHFSelect from "@/components/rhf/select";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card } from "@mui/material";
+import dayjs from "dayjs";
+import RHFDatePicker from "@/components/rhf/date-picker";
 
 type FilterProps = {
   onFilter: (inputData: Filter) => Promise<void>;
@@ -45,18 +46,19 @@ export const ProductCategoryNames: FunctionComponent<Props> = ({
 const ProductFilter: FunctionComponent<FilterProps> = ({ onFilter }) => {
   const methods = useForm<Filter>({
     defaultValues: {
-      start_date: "",
-      end_date: "",
+      start_date: dayjs().startOf("M").toISOString(),
+      end_date: dayjs().endOf("month").toISOString(),
       category_id: "all",
     },
     resolver: zodResolver(schema),
   });
+  console.log(methods.watch());
 
   return (
     <Card sx={{ mb: 5 }}>
       <RHFProvider methods={methods} onSubmit={onFilter}>
-        <RHFTextField label="start date" name="start_date" type="date" />
-        <RHFTextField label="end date" name="end_date" type="date" />
+        <RHFDatePicker label="start date" name="start_date" />
+        <RHFDatePicker label="end date" name="end_date" type="date" />
         <ProductCategoryNames customOption={<option value="all">All</option>} />
         <LoadingButton
           loading={methods.formState.isSubmitting}
