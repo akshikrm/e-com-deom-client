@@ -21,11 +21,6 @@ const RHFDatePicker: FunctionComponent<Props> = ({ label, name }) => {
             name={name}
             label={label}
             value={dayjs(value)}
-            slotProps={{
-              textField: {
-                helperText: "MM/DD/YYYY",
-              },
-            }}
             onChange={(newValue) => setValue(name, newValue?.toISOString())}
           />
         );

@@ -6,7 +6,7 @@ import useFetchProductCategoryNames from "../hooks/use-product-category-names";
 import RHFSelect from "@/components/rhf/select";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Card } from "@mui/material";
+import { Box, Card, Stack } from "@mui/material";
 import dayjs from "dayjs";
 import RHFDatePicker from "@/components/rhf/date-picker";
 
@@ -52,21 +52,26 @@ const ProductFilter: FunctionComponent<FilterProps> = ({ onFilter }) => {
     },
     resolver: zodResolver(schema),
   });
-  console.log(methods.watch());
 
   return (
     <Card sx={{ mb: 5 }}>
       <RHFProvider methods={methods} onSubmit={onFilter}>
-        <RHFDatePicker label="start date" name="start_date" />
-        <RHFDatePicker label="end date" name="end_date" type="date" />
-        <ProductCategoryNames customOption={<option value="all">All</option>} />
-        <LoadingButton
-          loading={methods.formState.isSubmitting}
-          type="submit"
-          variant="contained"
-        >
-          filter
-        </LoadingButton>
+        <Stack direction="row" alignItems="center">
+          <RHFDatePicker label="start date" name="start_date" />
+          <RHFDatePicker label="end date" name="end_date" />
+          <ProductCategoryNames
+            customOption={<option value="all">All</option>}
+          />
+          <Box>
+            <LoadingButton
+              loading={methods.formState.isSubmitting}
+              type="submit"
+              variant="contained"
+            >
+              filter
+            </LoadingButton>
+          </Box>
+        </Stack>
       </RHFProvider>
     </Card>
   );
