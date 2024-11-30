@@ -11,7 +11,10 @@ export const metadata: Metadata = {
   description: "List of products",
 };
 
-export default async function Products() {
+type Props = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+export default async function Products({ searchParams }: Props) {
   const jwt = await getJWT();
 
   if (!jwt) {
@@ -39,7 +42,7 @@ export default async function Products() {
           </Button>
         }
       />
-      <ProductList isAdmin={isAdmin} />
+      <ProductList isAdmin={isAdmin} searchParams={searchParams} />
     </>
   );
 }

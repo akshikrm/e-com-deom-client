@@ -1,5 +1,3 @@
-"use server";
-
 import { cookies } from "next/headers";
 
 type USER_ROLE = "admin" | "user";

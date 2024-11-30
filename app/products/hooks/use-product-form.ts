@@ -43,10 +43,10 @@ const newProductDefaultValues: NewProduct = {
   price: "",
 };
 
-const useProductForm = () => {
+const useProductForm = (defaultValues: EditProduct | undefined) => {
   const methods = useForm<NewProduct>({
     resolver: zodResolver(productSchema),
-    defaultValues: newProductDefaultValues,
+    defaultValues: defaultValues ? defaultValues : newProductDefaultValues,
   });
 
   return methods;

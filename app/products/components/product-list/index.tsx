@@ -1,39 +1,25 @@
-"use client";
-import { FunctionComponent, useState } from "react";
 import ProductFilter from "./product-filter";
 import { Box, Button, Card, Stack, Typography } from "@mui/material";
 import Link from "next/link";
-import DeleteProduct from "./delete-product";
 import RenderList from "@/components/render-list";
 import Render from "@/components/render";
-import useFetchProductList from "../hooks/use-product-list";
+import { getProducts } from "../../handler";
+import DeleteButton from "./delete-button";
+// import DeleteProduct from "../delete-product";
 
 type Props = {
   isAdmin: boolean;
+  searchParams: Promise<Filter>;
 };
 
-const ProductList: FunctionComponent<Props> = ({ isAdmin }) => {
-  const [products, fetchProducts] = useFetchProductList();
-  const [openDeleteDialog, setOpenDeleteDialog] = useState<number | null>(null);
-
-  const handleCloseDelete = async () => {
-    setOpenDeleteDialog(null);
-  };
-  const handleOpenDelete = (id: number) => {
-    setOpenDeleteDialog(id);
-  };
+export default async function ProductList({ isAdmin, searchParams }: Props) {
+  const filter = await searchParams;
+  const products = await getProducts(filter);
 
   return (
     <>
-      <ProductFilter
-        onFilter={async (inputData: Filter) => {
-          await fetchProducts(inputData);
-        }}
-      />
-      <DeleteProduct
-        selectedId={openDeleteDialog}
-        onClose={handleCloseDelete}
-      />
+      {/* <ProductFilter filter={filter} /> */}
+      {/* <DeleteProduct /> */}
       <Stack>
         <RenderList
           list={products}
@@ -60,12 +46,7 @@ const ProductList: FunctionComponent<Props> = ({ isAdmin }) => {
                         >
                           edit
                         </Button>
-                        <Button
-                          color="error"
-                          onClick={() => handleOpenDelete(item.id)}
-                        >
-                          delete
-                        </Button>
+                        <DeleteButton productId={item.id} />
                       </Stack>
                     }
                   />
@@ -77,6 +58,5 @@ const ProductList: FunctionComponent<Props> = ({ isAdmin }) => {
       </Stack>
     </>
   );
-};
-
-export default ProductList;
+}
+// export default ProductList;

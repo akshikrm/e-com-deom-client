@@ -14,10 +14,16 @@ type EditProduct = {
   category_id?: string;
 };
 
+// type Filter = Record<
+// 	"start_date" | "end_date" | "category_id" | string,
+// 	string
+// >;
+
 type Filter = {
-  start_date: string | null;
-  end_date: string | null;
-  category_id: string | null;
+  [key: string]: string | null;
+  start_date?: string | null;
+  end_date?: string | null;
+  category_id?: string | null;
 };
 
 type ProductCategoryNames = {

@@ -1,4 +1,3 @@
-"use client";
 import { updateProduct } from "../actions";
 import useGetProductById from "./use-get-product-by-id";
 

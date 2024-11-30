@@ -1,19 +1,16 @@
-"use client";
-import useEditProduct from "./hooks/use-edit-product";
 import ProductForm from "../components/product-form";
-import { use } from "react";
-import { Card } from "@mui/material";
-
+import { getProductById } from "./handler";
 type Props = {
-  params: Promise<{ product_id: string }>;
+  params: Promise<{ product_id: number }>;
 };
 
-export default function EditProduct({ params }: Props) {
-  const { product_id } = use(params);
-  const { methods, onSubmit } = useEditProduct(parseInt(product_id));
+export default async function EditProduct({ params }: Props) {
+  const { product_id } = await params;
+
+  const { data } = await getProductById(product_id);
   return (
-    <Card>
-      <ProductForm methods={methods} onSubmit={onSubmit} buttonLabel="update" />
-    </Card>
+    <>
+      <ProductForm buttonLabel="update" defaultValues={data} />
+    </>
   );
 }

@@ -1,4 +1,3 @@
-"use server";
 import server from "@/utils/server";
 import { AxiosError } from "axios";
 
