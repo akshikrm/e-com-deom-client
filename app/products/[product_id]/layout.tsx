@@ -9,7 +9,9 @@ export const metadata: Metadata = {
 
 export default async function EditLayout({
   children,
-}: Readonly<{ children: ReactNode }>) {
+}: Readonly<{
+  children: ReactNode;
+}>) {
   return (
     <>
       <HeaderBreadcrumbs

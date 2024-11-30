@@ -1,3 +1,4 @@
+"use server";
 import axios, { AxiosError } from "axios";
 import { BASE_URL } from "@/config";
 import { getJWT } from "./auth";

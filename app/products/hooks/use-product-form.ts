@@ -35,7 +35,7 @@ const productSchema = z.object({
     .gte(1, { message: "price should be greater than zero" }),
 });
 
-const newProductDefaultValues: NewProduct = {
+const newProductDefaultValues: NewProduct | EditProduct = {
   name: "",
   slug: "",
   description: "",

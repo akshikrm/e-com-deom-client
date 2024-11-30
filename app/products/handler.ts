@@ -1,3 +1,4 @@
+"use server";
 import server from "@/utils/server";
 import { AxiosError } from "axios";
 
@@ -13,13 +14,24 @@ export const getProducts = async (params: object = {}): Promise<Product[]> => {
 
 export const createProduct = async (
   reqData: NewProduct,
-): Promise<FailedResponse> => {
+): Promise<{ data?: NewProduct; status: boolean; message?: string }> => {
+  "use server";
   try {
     const { data } = await server.post("/products", reqData);
     return { status: true, message: data.data };
   } catch (err) {
-    const { failed } = err as RequestFailedError;
-    return failed();
+    const { status } = err as RequestFailedError;
+    switch (status) {
+      case 404: {
+        return { status: false, message: "product not found" };
+      }
+      case 401: {
+        return { status: false, message: "unauthorized" };
+      }
+      default: {
+        return { status: false, message: "something went wrong" };
+      }
+    }
   }
 };
 

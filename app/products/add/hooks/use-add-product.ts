@@ -1,11 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
-import useProductForm from "../../hooks/use-product-form";
 import { createProduct } from "../../handler";
 
 const useAddProduct = () => {
-  const methods = useProductForm();
-
   const router = useRouter();
   const onSubmit = async (inputData: NewProduct) => {
     try {
@@ -18,7 +15,7 @@ const useAddProduct = () => {
     }
   };
 
-  return { methods, onSubmit };
+  return { onSubmit };
 };
 
 export default useAddProduct;

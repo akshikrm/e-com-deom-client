@@ -1,5 +1,6 @@
 import ProductForm from "../components/product-form";
-import { getProductById } from "./handler";
+import { getProductById, updateProduct } from "./handler";
+
 type Props = {
   params: Promise<{ product_id: number }>;
 };
@@ -10,7 +11,11 @@ export default async function EditProduct({ params }: Props) {
   const { data } = await getProductById(product_id);
   return (
     <>
-      <ProductForm buttonLabel="update" defaultValues={data} />
+      <ProductForm
+        buttonLabel="update"
+        defaultValues={data}
+        onSubmit={updateProduct(product_id)}
+      />
     </>
   );
 }
